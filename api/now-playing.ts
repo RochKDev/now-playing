@@ -5,11 +5,19 @@ import { Player } from "../components/NowPlaying";
 import { nowPlaying } from "../utils/spotify";
 
 export default async function (req: NowRequest, res: NowResponse) {
+  const response = await nowPlaying();
+  
+  if (!response) {
+    // Gérer le cas où la réponse est undefined ou vide
+    res.status(500).send("Erreur lors de la récupération des données de lecture en cours");
+    return;
+  }
+
   const {
     item = ({} as any),
     is_playing: isPlaying = false,
     progress_ms: progress = 0,
-  } = await nowPlaying();
+  } = response;
 
   const params = decode(req.url.split("?")[1]) as any;
 
