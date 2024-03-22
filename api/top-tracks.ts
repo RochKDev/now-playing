@@ -36,8 +36,9 @@ export default async function (req: NowRequest, res: NowResponse) {
   }
 
   const artist = (item.artists || []).map(({ name }) => name).join(", ");
+  i++;
   const text = renderToString(
-    Track({ index: Number.parseInt(String(i++)), cover: coverImg, artist, track })
+    Track({ index: Number.parseInt(i), cover: coverImg, artist, track })
   );
   return res.status(200).send(text);
 }
